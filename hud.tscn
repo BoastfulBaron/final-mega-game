@@ -1,0 +1,50 @@
+[gd_scene load_steps=5 format=3 uid="uid://bl031g1wilc6w"]
+
+[ext_resource type="Script" path="res://hud.gd" id="1_5du55"]
+[ext_resource type="Texture2D" uid="uid://brrrgpo6ydqao" path="res://Assets/Images/hud_coin.png" id="1_ulmmn"]
+[ext_resource type="FontFile" uid="uid://bilk37s5j27f8" path="res://Assets/Fonts/paladins.ttf" id="2_kig71"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bwo51"]
+bg_color = Color(0, 0, 0, 0.286275)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_5du55")
+
+[node name="Panel" type="Panel" parent="."]
+offset_left = 24.0
+offset_top = 30.0
+offset_right = 186.0
+offset_bottom = 76.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_bwo51")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_left = 30.0
+offset_top = 33.0
+offset_right = 70.0
+offset_bottom = 73.0
+texture = ExtResource("1_ulmmn")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="."]
+offset_left = 65.0
+offset_top = 43.0
+offset_right = 101.0
+offset_bottom = 69.0
+theme_override_colors/font_color = Color(0.998796, 0.929267, 0.925042, 1)
+theme_override_fonts/font = ExtResource("2_kig71")
+theme_override_font_sizes/font_size = 25
+text = "x"
+
+[node name="CoinsLabel" type="Label" parent="."]
+offset_left = 104.0
+offset_top = 37.0
+offset_right = 162.0
+offset_bottom = 70.0
+theme_override_colors/font_color = Color(0.998796, 0.929267, 0.925042, 1)
+theme_override_fonts/font = ExtResource("2_kig71")
+theme_override_font_sizes/font_size = 32
+text = "%%"
