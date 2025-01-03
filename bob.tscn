@@ -917,7 +917,7 @@ bones/9/position = Vector3(0, 0, 0)
 bones/9/rotation = Quaternion(-0.707107, 0, 0, 0.707107)
 bones/9/scale = Vector3(1, 1, 1)
 
-[node name="robot" type="MeshInstance3D" parent="Armature/Skeleton3D"]
+[node name="robot" type="MeshInstance3D" parent="Armature/Skeleton3D" groups=["Player"]]
 mesh = SubResource("ArrayMesh_ludrf")
 skin = SubResource("Skin_ronen")
 

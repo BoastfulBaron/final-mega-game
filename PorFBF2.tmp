@@ -1,0 +1,75 @@
+[gd_scene load_steps=12 format=3 uid="uid://dmqhcetk0hbxg"]
+
+[ext_resource type="Script" path="res://Portal.gd" id="1_2xdsr"]
+[ext_resource type="Shader" uid="uid://djypr4pcea07y" path="res://portal_shader.tres" id="1_8l0qv"]
+[ext_resource type="Texture2D" uid="uid://buii2cilxgguo" path="res://Assets/Portal_textures/Smoke (93).jpg" id="2_rc0pr"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_olb07"]
+render_priority = 0
+shader = ExtResource("1_8l0qv")
+shader_parameter/ColorGlow = 12.0
+shader_parameter/Portal_Color = Color(0.286275, 0.654902, 0.756863, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_robq1"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r7wsv"]
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+albedo_color = Color(0.0901961, 0.494118, 1, 1)
+albedo_texture = ExtResource("2_rc0pr")
+grow = true
+grow_amount = 0.2
+use_particle_trails = true
+
+[sub_resource type="Curve" id="Curve_sj88u"]
+min_value = -2.0
+max_value = 2.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_hmunu"]
+curve_z = SubResource("Curve_sj88u")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_d6cvm"]
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 0.0
+emission_ring_radius = 1.14
+emission_ring_inner_radius = 1.14
+orbit_velocity_min = 0.2
+orbit_velocity_max = 0.2
+orbit_velocity_curve = SubResource("CurveXYZTexture_hmunu")
+radial_velocity_min = 0.199978
+radial_velocity_max = 0.499978
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_bnkvg"]
+size = 0.5
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_skiqo"]
+height = 0.098939
+radius = 1.14266
+
+[node name="Vfx portal" type="Area3D"]
+script = ExtResource("1_2xdsr")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_olb07")
+mesh = SubResource("QuadMesh_robq1")
+skeleton = NodePath("../..")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+material_override = SubResource("StandardMaterial3D_r7wsv")
+amount = 152
+trail_enabled = true
+trail_lifetime = 0.5
+process_material = SubResource("ParticleProcessMaterial_d6cvm")
+draw_pass_1 = SubResource("RibbonTrailMesh_bnkvg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+shape = SubResource("CylinderShape3D_skiqo")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
