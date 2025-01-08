@@ -823,6 +823,7 @@ mesh = SubResource("BoxMesh_5t0a3")
 
 [node name="Face" type="MeshInstance3D" parent="MeshInstance3D"]
 transform = Transform3D(0.427015, 0, 0, 0, -9.69975e-09, 0.427015, 0, -0.221904, -1.86654e-08, 0, 0.366056, -0.49871)
+visible = false
 mesh = SubResource("CylinderMesh_pagam")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -921,7 +922,16 @@ bones/9/scale = Vector3(1, 1, 1)
 mesh = SubResource("ArrayMesh_ludrf")
 skin = SubResource("Skin_ronen")
 
+[node name="Nadepos" type="Marker3D" parent="Armature/Skeleton3D"]
+transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, -0.747987, 1.21606, 0.810614)
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_23v05")
 }
+
+[node name="Throwtimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[connection signal="timeout" from="Throwtimer" to="." method="_on_throwtimer_timeout"]

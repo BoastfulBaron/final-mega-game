@@ -1,11 +1,11 @@
 extends CharacterBody3D
 
-
 const SPEED = 5.0
 const JUMP_VELOCITY = 12
 
+var Grenade = preload("res://portal_nade.tscn")
 var xform : Transform3D
-
+var canThrow = true
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -38,7 +38,7 @@ func _physics_process(delta):
 	# Handle jump.
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
-
+	
 	
 	
 	# New Vector3 dir taking into account cam rot an arrow input
@@ -69,6 +69,8 @@ func _physics_process(delta):
 	#Make Camera Controller Match the position of Bob
 	$Camera_Controller.position = lerp($Camera_Controller.position, position, 0.15 )
 	
+	#Grenade function
+	grenadeThrow()
 	
 func align_with_floor(floor_normal):
 	xform = global_transform
@@ -76,8 +78,29 @@ func align_with_floor(floor_normal):
 	xform.basis.x = -xform.basis.z.cross(floor_normal)
 	xform.basis = xform.basis.orthonormalized()
 	
-	
-	
+func grenadeThrow():
+	if Input.is_action_just_released("Throw") && canThrow:
+		var grenadeins = Grenade.instantiate()
+		grenadeins.position = $Armature/Skeleton3D/Nadepos.global_position
+		get_tree().current_scene.add_child(grenadeins)
+		
+		canThrow = false
+		$Throwtimer.start()
+		
+#		force var for grenade in negative so it moves away from player
+		var force = -20
+#		Contro Arch of grenade
+		var upDirection = 15
+		var direction = $Camera_Controller.transform.basis.z.normalized()
+		var impulse = direction * force + Vector3(0, upDirection , 0)
+		
+		var playerRotation = $Armature/Skeleton3D/Nadepos.global_transform.basis.z.normalized()
+		
+		grenadeins.apply_central_impulse(impulse)
+		
+		
+		
+		
 	
 	
 	
@@ -95,3 +118,7 @@ func _on_fall_zone_body_entered(body):
 	
 	
 	
+
+
+func _on_throwtimer_timeout() -> void:
+	canThrow = true
